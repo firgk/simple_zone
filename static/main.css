@@ -1,0 +1,53 @@
+/* 基础样式设置 */
+body {
+    background-color: #a5c1cf; /* Vibrant orange */
+    font-family: Arial, sans-serif;
+}
+
+/* 页面容器 */
+.container {
+    max-width: 90%;
+    margin: auto;
+}
+
+/* ===== 表单相关样式 ===== */
+form {
+    padding: 20px;
+    background-color: #708d97;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+/* 表单输入框样式 */
+.form-control {
+    border: 1px solid #ffbf80;
+    background-color: #fdfdfd;
+    color: white;
+}
+
+/* ===== 卡片组件样式 ===== */
+.card {
+    background-color: #8ca294; /* Rich purple */
+    border: 2px solid #973c08;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    color: black !important; /* White text */
+}
+
+
+/* ===== 富文本编辑器样式 ===== */
+.ql-editor {
+    min-height: 150px;
+    background-color: rgb(183, 188, 197);
+    color: black;
+}
+
+/* ===== 通用图片样式 ===== */
+img {
+    max-width: 500px;
+    height: auto;
+    cursor: pointer;
+    border: 2px solid #ffbf80;
+}
+

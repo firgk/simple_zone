@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post</title>
+    <script src="../static/quill.min.js"></script>
+    <link href="../static/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/main.css">
+
+    <style>
+        .ql-editor {
+            min-height: 150px;
+        }
+        img {
+            max-width: 500px;
+            height: auto;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 w-40">
+        <h1 class="mb-4 text-center">Add New Post</h1>
+        <form action="{{ url_for('add_post') }}" method="POST">
+            <!-- <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" name="title">
+            </div> -->
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <div id="editor"></div>
+                <textarea name="content" id="content" style="display:none;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit Post</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Back</a>
+        </form>
+    </div>
+
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write your post here... Paste images directly!',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, false] }],
+                        ['bold', 'italic', 'underline'],
+                        ['image'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        image: function() {
+                            const input = document.createElement('input');
+                            input.setAttribute('type', 'file');
+                            input.setAttribute('accept', 'image/*');
+                            input.click();
+
+                            input.onchange = async function() {
+                                const file = input.files[0];
+                                if (file) {
+                                    const formData = new FormData();
+                                    formData.append('image', file);
+
+                                    try {
+                                        const response = await fetch('/upload_image', {
+                                            method: 'POST',
+                                            body: formData
+                                        });
+                                        const data = await response.json();
+                                        
+                                        if (data.url) {
+                                            const range = quill.getSelection();
+                                            quill.insertEmbed(range.index, 'image', data.url);
+                                        } else {
+                                            alert('图片上传失败：' + (data.error || '未知错误'));
+                                        }
+                                    } catch (error) {
+                                        console.error('Error:', error);
+                                        alert('图片上传失败，请重试');
+                                    }
+                                }
+                            };
+                        }
+                    }
+                }
+            }
+        });
+
+        // 处理粘贴图片
+        quill.root.addEventListener("paste", async function(event) {
+            let clipboardData = event.clipboardData || window.clipboardData;
+            if (clipboardData) {
+                let items = clipboardData.items;
+                for (let item of items) {
+                    if (item.type.indexOf("image") !== -1) {
+                        event.preventDefault();
+                        const file = item.getAsFile();
+                        const formData = new FormData();
+                        formData.append('image', file);
+
+                        try {
+                            const response = await fetch('/upload_image', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            const data = await response.json();
+                            
+                            if (data.url) {
+                                const range = quill.getSelection();
+                                quill.insertEmbed(range.index, 'image', data.url);
+                            } else {
+                                alert('图片上传失败：' + (data.error || '未知错误'));
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('图片上传失败，请重试');
+                        }
+                    }
+                }
+            }
+        });
+
+        document.querySelector("form").onsubmit = function () {
+            document.getElementById("content").value = quill.root.innerHTML;
+        };
+    </script>
+</body>
+</html>
