@@ -49,7 +49,7 @@ python app.py
 
 外网访问需要修改app.py
 ```
-debug=False
+app.run(host="0.0.0.0",debug=True,port=2333)
 ```
 
 
