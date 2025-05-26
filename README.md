@@ -45,8 +45,12 @@ python app.py
 
 
 
+## 注意
 
-
+外网访问需要修改app.py
+```
+debug=False
+```
 
 
 
