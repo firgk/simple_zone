@@ -1,5 +1,4 @@
 #!/bin/bash
-cp debian.md README.md
 git add .
 git commit -m "update"
 git push
