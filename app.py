@@ -8,7 +8,7 @@ import os
 import uuid
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db' 
 app.config['SECRET_KEY'] = 'mjqqsssaaawwwkwwwss' # 加密密钥
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # 图片上传目录
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制上传文件大小为16MB

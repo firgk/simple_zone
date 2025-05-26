@@ -18,12 +18,6 @@ form {
     color: white;
 }
 
-/* 表单输入框样式 */
-.form-control {
-    border: 1px solid #ffbf80;
-    background-color: #fdfdfd;
-    color: white;
-}
 
 /* ===== 卡片组件样式 ===== */
 .card {
