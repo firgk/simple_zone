@@ -12,6 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SECRET_KEY'] = 'mjqqsssaaawwwkwwwss' # 加密密钥
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # 图片上传目录
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制上传文件大小为16MB
+app.config['REQUIRE_LOGIN_TO_VIEW'] = True  # 新增配置：是否需要登录才能查看内容
 
 # 确保上传目录存在
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -86,6 +87,11 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
+    # 检查是否需要登录才能查看内容
+    if app.config['REQUIRE_LOGIN_TO_VIEW'] and not current_user.is_authenticated:
+        flash("请先登录以查看内容", "warning")
+        return redirect(url_for('login'))
+    
     posts = Post.query.order_by(Post.date.desc()).all()
     return render_template('index.html', posts=posts)
 
