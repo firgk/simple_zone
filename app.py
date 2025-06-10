@@ -166,7 +166,7 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user)
+            login_user(user, remember=True)
             flash("Logged in successfully!", "success")
             return redirect(url_for('index'))
         else:
